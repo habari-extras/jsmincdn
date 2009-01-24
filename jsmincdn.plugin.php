@@ -67,7 +67,7 @@ class jsMinCDN extends Plugin
 				$doomit = false;
 
 				if(in_array($name, $domin)) {
-					$script_build .= '+' . $name;
+					$script_build .= '.' . $name;
 					$seq[$name] = $element;
 				}
 				else {
@@ -100,7 +100,8 @@ class jsMinCDN extends Plugin
 				elseif(Cache::has(array('jsmincdn_post', $seqname))) {
 					$doomit = false;
 					$output = Cache::get(array('jsmincdn_post', $seqname));
-					$restack[$seqname] = $output;
+					//$restack[$seqname] = $output;
+					$restack[$seqname] = URL::get('jsmincdn', array('name' => $seqname));
 				}
 				else {
 					foreach($seqelement as $name => $element) {
@@ -138,7 +139,8 @@ class jsMinCDN extends Plugin
 						$script .= "\n\n/* {$name} */\n\n";
 						$script .= JSMin::minify($output);
 					}
-					$restack[$seqname] = $script;
+					//$restack[$seqname] = $script;
+					$restack[$seqname] = URL::get('jsmincdn', array('name' => $seqname));
 					Cache::set(array('jsmincdn_post', $seqname), $script, 3600 * 24);
 				}
 			}
@@ -146,6 +148,32 @@ class jsMinCDN extends Plugin
 			$stack = $restack;
 		}
 		return $stack;
+	}
+
+	public function action_handler_script_cache( $handler_vars )
+	{
+		$cache_name = $handler_vars['name'];
+
+		$script = Cache::get(array('jsmincdn_post', $cache_name));
+
+		header('content-type: text/javascript');
+
+		echo $script;
+	}
+
+	public function filter_rewrite_rules( $rules )
+	{
+		$rules[] = new RewriteRule( array(
+			'name' => 'jsmincdn',
+			'parse_regex' => '%^jsmincdn/(?P<name>.+)/?$%i',
+			'build_str' => 'jsmincdn/{$name}/',
+			'handler' => 'UserThemeHandler',
+			'action' => 'script_cache',
+			'priority' => 3,
+			'is_active' => 1,
+			'description' => 'Reply with a script from cache',
+		));
+		return $rules;
 	}
 
 }
