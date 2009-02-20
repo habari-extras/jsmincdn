@@ -1,0 +1,10 @@
+<plugin>
+	<name>js-min-cdn</name>
+	<url>http://habariproject.org/</url>
+	<author>Owen Winkler</author>
+	<authorurl>http://asymptomatic.net/</authorurl>
+	<version>1.0</version>
+	<description>Makes a site delivery lithe by reducing the number of files served and distributing them over a CDN</description>
+	<license>Apache License 2.0</license>
+</plugin>
+
