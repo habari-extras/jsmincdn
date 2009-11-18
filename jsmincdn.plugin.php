@@ -9,18 +9,6 @@
 
 class jsMinCDN extends Plugin
 {
-	function info(){
-		return array (
-			'name' => 'js-min-cdn',
-			'url' => 'http://habariproject.org/',
-			'author' => 'Owen Winkler',
-			'authorurl' => 'http://asymptomatic.net/',
-			'version' => '1.0',
-			'description' => 'Makes a site delivery lithe by reducing the number of files served and distributing them over a CDN',
-			'license' => 'Apache License 2.0',
-		);
-
-	}
 
 	function help()
 	{
