@@ -54,7 +54,7 @@ class jsMinCDN extends Plugin
 			foreach( $stack as $name => $element ) {
 				$doomit = false;
 
-				if(in_array($name, $domin)) {
+				if($domin && in_array($name, $domin)) {
 					$script_build .= '.' . $name;
 					$seq[$name] = $element;
 				}
