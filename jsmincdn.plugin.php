@@ -193,6 +193,26 @@ class jsMinCDN extends Plugin
 		return $rules;
 	}
 
+	public function filter_final_output($buffer)
+	{
+		$regex = '%http://[^/]+?\.static\.flickr\.com/[0-9a-f/_]+\w?\.(jpg|png|gif)%i';
+		if(preg_match_all($regex, $buffer, $matches, PREG_SET_ORDER)) {
+			foreach($matches as $match) {
+				$hashfile = 'flickr.static.' . md5($match[0]) . '.' . $match[1];
+				if(!file_exists(HABARI_PATH . '/user/files/' . $hashfile)) {
+					$flickrimg = file_get_contents($match[0]);
+					file_put_contents(Site::get_dir('user', '/files/') . $hashfile, $flickrimg);
+				}
+				$buffer = str_replace($match[0], Site::get_url('user') . '/files/' . $hashfile, $buffer);
+			}
+		}
+
+		$regex = '#http://' . preg_quote(Site::get_url('hostname')) . '(/[\\w/.]+?\\.(?:jpg|jpeg|png|gif|css|js))#';
+		$buffer = preg_replace($regex, 'http://' . Site::get_url('hostname') . '.owenw.com$1', $buffer);
+
+		return $buffer;
+	}
+
 }
 
 ?>
