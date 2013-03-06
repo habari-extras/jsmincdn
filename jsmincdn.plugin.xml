@@ -2,8 +2,7 @@
 <pluggable type="plugin">
         <name>js-min-cdn</name>
         <url>http://habariproject.org/</url>
-        <author>Owen Winkler</author>
-        <author url="http://asymptomatic.net/"></author>
+        <author url="http://asymptomatic.net/">Owen Winkler</author>
         <version>1.0</version>
         <description><![CDATA[Makes a site delivery lithe by reducing the number of files served and distributing them over a CDN]]></description>
         <license url="http://www.apache.org/licenses/LICENSE-2.0.html">Apache Software License 2.0</license>
