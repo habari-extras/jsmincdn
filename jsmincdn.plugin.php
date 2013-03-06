@@ -51,10 +51,8 @@ class jsMinCDN extends Plugin
 	function filter_stack_out($stack, $stack_name, $filter)
 	{
 		static $incmin = false;
-//		return $stack;
 
 		if ( in_array($stack_name, array('template_header_javascript', 'template_footer_javascript')) && is_callable($filter) && strcasecmp(implode('::', $filter), 'stack::scripts') == 0) {
-//var_dump($stack);
 
 			// Load the minifier class once
 			if(!$incmin) {
@@ -155,14 +153,12 @@ class jsMinCDN extends Plugin
 						}
 						$script .= JSMin::minify($output);
 					}
-					//$restack[$seqname] = $script;
 					$restack[$seqname] = new StackItem($seqname, '0', URL::get('jsmincdn', array('name' => $seqname)));
 					Cache::set(array('jsmincdn_post', $seqname), $script, 3600 * 24);
 				}
 			}
 
 			$stack = $restack;
-//var_dump($stack);
 		}
 		return $stack;
 	}
@@ -191,26 +187,6 @@ class jsMinCDN extends Plugin
 			'description' => 'Reply with a script from cache',
 		));
 		return $rules;
-	}
-
-	public function filter_final_output($buffer)
-	{
-		$regex = '%http://[^/]+?\.static\.flickr\.com/[0-9a-f/_]+\w?\.(jpg|png|gif)%i';
-		if(preg_match_all($regex, $buffer, $matches, PREG_SET_ORDER)) {
-			foreach($matches as $match) {
-				$hashfile = 'flickr.static.' . md5($match[0]) . '.' . $match[1];
-				if(!file_exists(HABARI_PATH . '/user/files/' . $hashfile)) {
-					$flickrimg = file_get_contents($match[0]);
-					file_put_contents(Site::get_dir('user', '/files/') . $hashfile, $flickrimg);
-				}
-				$buffer = str_replace($match[0], Site::get_url('user') . '/files/' . $hashfile, $buffer);
-			}
-		}
-
-		$regex = '#http://' . preg_quote(Site::get_url('hostname')) . '(/[\\w/.]+?\\.(?:jpg|jpeg|png|gif|css|js))#';
-		$buffer = preg_replace($regex, 'http://' . Site::get_url('hostname') . '.owenw.com$1', $buffer);
-
-		return $buffer;
 	}
 
 }
