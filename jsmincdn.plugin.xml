@@ -8,6 +8,7 @@
         <description><![CDATA[Makes a site delivery lithe by reducing the number of files served and distributing them over a CDN]]></description>
         <license url="http://www.apache.org/licenses/LICENSE-2.0.html">Apache Software License 2.0</license>
         <copyright>2009</copyright>
+        <guid>8112edcf-8483-4d79-bf9d-2be64f1739c6</guid>
 </pluggable>
 
  
